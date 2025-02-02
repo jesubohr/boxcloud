@@ -92,7 +92,7 @@ export default function Home() {
       for (const folder of newPath) {
         files =
           files.find((f: FileItem) => f.name === folder && f.type === "folder")
-            ?.children || []
+            ?.children ?? []
       }
       setCurrentFiles(files)
     }
