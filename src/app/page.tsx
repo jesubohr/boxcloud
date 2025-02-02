@@ -1,37 +1,110 @@
-import Link from "next/link";
+"use client"
 
-export default function HomePage() {
+import { useState } from "react"
+import { Breadcrumb } from "~/components/breadcrumb"
+import { FileList } from "~/components/file-list"
+import { Header } from "~/components/header"
+
+// Mock data
+interface FileItem {
+  id: string
+  name: string
+  type: "file" | "folder"
+  size: string
+  children?: FileItem[]
+}
+
+const initialFiles: FileItem[] = [
+  {
+    id: "1",
+    name: "Documents",
+    type: "folder",
+    size: "-",
+    children: [
+      {
+        id: "2",
+        name: "Work",
+        type: "folder",
+        size: "-",
+        children: [
+          {
+            id: "3",
+            name: "Project Proposal.docx",
+            type: "file",
+            size: "2.5 MB",
+          },
+          { id: "4", name: "Budget.xlsx", type: "file", size: "1.8 MB" },
+        ],
+      },
+      {
+        id: "5",
+        name: "Personal",
+        type: "folder",
+        size: "-",
+        children: [
+          { id: "6", name: "Resume.pdf", type: "file", size: "567 KB" },
+          { id: "7", name: "Family Photo.jpg", type: "file", size: "4.2 MB" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "8",
+    name: "Downloads",
+    type: "folder",
+    size: "-",
+    children: [
+      { id: "9", name: "Movie.mp4", type: "file", size: "1.2 GB" },
+      { id: "10", name: "Song.mp3", type: "file", size: "5.7 MB" },
+    ],
+  },
+  { id: "11", name: "Notes.txt", type: "file", size: "12 KB" },
+]
+
+export default function Home() {
+  const [currentPath, setCurrentPath] = useState<string[]>([])
+  const [currentFiles, setCurrentFiles] = useState<FileItem[]>(initialFiles)
+
+  const navigateToFolder = (folderId: string) => {
+    const findFolder = (files: FileItem[], id: string): void => {
+      for (const file of files) {
+        if (file.id === id && file.type === "folder") {
+          setCurrentPath([...currentPath, file.name])
+          setCurrentFiles(file.children!)
+          return
+        }
+        if (file.children) {
+          findFolder(file.children, id)
+        }
+      }
+    }
+    findFolder(initialFiles, folderId)
+  }
+
+  const navigateToBreadcrumb = (index: number) => {
+    if (index === -1) {
+      setCurrentPath([])
+      setCurrentFiles(initialFiles)
+    } else {
+      const newPath = currentPath.slice(0, index + 1)
+      setCurrentPath(newPath)
+      let files = initialFiles
+      for (const folder of newPath) {
+        files =
+          files.find((f: FileItem) => f.name === folder && f.type === "folder")
+            ?.children || []
+      }
+      setCurrentFiles(files)
+    }
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
-        </div>
-      </div>
-    </main>
-  );
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      <Header />
+      <main className="container mx-auto px-4 py-8">
+        <Breadcrumb path={currentPath} onNavigate={navigateToBreadcrumb} />
+        <FileList files={currentFiles} onFolderClick={navigateToFolder} />
+      </main>
+    </div>
+  )
 }
