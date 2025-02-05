@@ -1,5 +1,6 @@
-import type { Folder, File } from "~/types"
+import type { BoxFolder, BoxFile } from "~/types"
 import { File as FileIcon, Folder as FolderIcon } from "lucide-react"
+import { formatDate, formatSize } from "~/lib/utils"
 
 export function ItemList({ children }: { children: React.ReactNode }) {
   return (
@@ -18,7 +19,7 @@ export function ItemList({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function FileRow({ file }: { file: File }) {
+export function FileRow({ file }: { file: BoxFile }) {
   return (
     <tr key={file.id} className="border-b border-gray-800 hover:bg-gray-800">
       <td className="px-4 py-2">
@@ -28,14 +29,15 @@ export function FileRow({ file }: { file: File }) {
         </a>
       </td>
       <td className="px-4 py-2 capitalize">{file.type}</td>
-      <td className="px-4 py-2">{file.size ?? "-"}</td>
+      <td className="px-4 py-2">{formatSize(file.size) ?? "-"}</td>
+      <td className="px-4 py-2">{formatDate(file.created_at)}</td>
     </tr>
   )
 }
 
 interface FolderRowProps {
-  folder: Folder
-  onClick: (id: string) => void
+  folder: BoxFolder
+  onClick: (id: number) => void
 }
 export function FolderRow({ folder, onClick }: FolderRowProps) {
   return (
@@ -49,8 +51,9 @@ export function FolderRow({ folder, onClick }: FolderRowProps) {
           {folder.name}
         </button>
       </td>
-      <td className="px-4 py-2 capitalize">{folder.type}</td>
+      <td className="px-4 py-2 capitalize">Folder</td>
       <td className="px-4 py-2">-</td>
+      <td className="px-4 py-2">{formatDate(folder.created_at)}</td>
     </tr>
   )
 }
