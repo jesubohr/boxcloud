@@ -1,6 +1,7 @@
 import type { BoxFolder, BoxFile } from "~/types"
 import { File as FileIcon, Folder as FolderIcon } from "lucide-react"
 import { formatDate, formatSize } from "~/lib/utils"
+import Link from "next/link"
 
 export function ItemList({ children }: { children: React.ReactNode }) {
   return (
@@ -35,21 +36,18 @@ export function FileRow({ file }: { file: BoxFile }) {
   )
 }
 
-interface FolderRowProps {
-  folder: BoxFolder
-  onClick: (id: number) => void
-}
-export function FolderRow({ folder, onClick }: FolderRowProps) {
+interface FolderRowProps { folder: BoxFolder }
+export function FolderRow({ folder }: FolderRowProps) {
   return (
     <tr key={folder.id} className="border-b border-gray-800 hover:bg-gray-800">
       <td className="px-4 py-2">
-        <button
-          onClick={() => onClick(folder.id)}
+        <Link
+          href={`/f/${folder.id}`}
           className="flex w-full items-center text-left"
         >
           <FolderIcon className="mr-2 h-5 w-5 text-blue-400" />
           {folder.name}
-        </button>
+        </Link>
       </td>
       <td className="px-4 py-2 capitalize">Folder</td>
       <td className="px-4 py-2">-</td>
