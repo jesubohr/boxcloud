@@ -1,12 +1,5 @@
-import { db } from "~/server/db"
-import { folders as foldersSchema, files as filesSchema } from "~/server/db/schema"
-import BoxCloudContents from "./boxcloud-contents"
+import { redirect } from "next/navigation"
 
-export default async function BoxCloud() {
-  const folders = await db.select().from(foldersSchema)
-  const files = await db.select().from(filesSchema)
-
-  return (
-    <BoxCloudContents folders={folders} files={files} />
-  )
+export default async function HomePage() {
+  redirect("/f/1")
 }
