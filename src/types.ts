@@ -10,6 +10,6 @@ export type File = {
   name: string
   size: string
   url: string
-  type: "file"
-  parent: string | null
+  type: string
+  parent: string
 }
