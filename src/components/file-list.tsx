@@ -36,8 +36,7 @@ export function FileRow({ file }: { file: BoxFile }) {
   )
 }
 
-interface FolderRowProps { folder: BoxFolder }
-export function FolderRow({ folder }: FolderRowProps) {
+export function FolderRow({ folder }: { folder: BoxFolder }) {
   return (
     <tr key={folder.id} className="border-b border-gray-800 hover:bg-gray-800">
       <td className="px-4 py-2">
