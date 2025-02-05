@@ -1,6 +1,8 @@
-import { db } from "~/server/db"
-import { eq } from "drizzle-orm"
-import { folders as foldersSchema, files as filesSchema } from "~/server/db/schema"
+import {
+  getFoldersByFolderId,
+  getFilesByFolderId,
+  getAllParentsByFolderId,
+} from "~/server/db/queries"
 import BoxCloudContents from "~/app/boxcloud-contents"
 
 interface Props {
@@ -13,10 +15,11 @@ export default async function BoxCloud(props: Props) {
     return <div>Invalid folder id</div>
   }
 
-  const folders = await db.select().from(foldersSchema).where(eq(foldersSchema.parent, folderId))
-  const files = await db.select().from(filesSchema).where(eq(filesSchema.parent, folderId))
+  const [folders, files, parents] = await Promise.all([
+    getFoldersByFolderId(folderId),
+    getFilesByFolderId(folderId),
+    getAllParentsByFolderId(folderId),
+  ])
 
-  return (
-    <BoxCloudContents folders={folders} files={files} />
-  )
+  return <BoxCloudContents folders={folders} files={files} parents={parents} />
 }
