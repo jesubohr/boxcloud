@@ -1,7 +1,7 @@
-import type { folders, files } from "~/server/db/schema"
+import type { foldersTable, filesTable } from "~/server/db/schema"
 
-export type BoxFolder = typeof folders.$inferSelect
-export type BoxFile = typeof files.$inferSelect
+export type BoxFolder = typeof foldersTable.$inferSelect
+export type BoxFile = typeof filesTable.$inferSelect
 
 export type Folder = {
   id: string
