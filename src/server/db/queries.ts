@@ -3,7 +3,9 @@ import "server-only"
 import { db } from "./index"
 import { eq } from "drizzle-orm"
 import { foldersTable, filesTable } from "~/server/db/schema"
+import type { BoxFile } from "~/types"
 
+/* QUERIES */
 export function getFoldersByFolderId(folderId: number) {
   return db
     .select()
@@ -34,4 +36,9 @@ export async function getAllParentsByFolderId(folderId: number) {
     currentFolderId = folder[0].parent
   }
   return parents
+}
+
+/* MUTATIONS */
+export async function createFile(input: { file: Omit<BoxFile, "id" | "parent">, userId: string }) {
+  return await db.insert(filesTable).values({ ...input.file, parent: 1 })
 }
