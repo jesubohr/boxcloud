@@ -38,7 +38,9 @@ export const ourFileRouter = {
           size: file.size,
           url: file.url,
           type: file.type,
-          created_at: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          ownerId: metadata.userId,
         },
         userId: metadata.userId
       })

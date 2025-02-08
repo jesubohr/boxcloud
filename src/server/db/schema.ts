@@ -1,11 +1,9 @@
-import "server-only"
-
 import {
   int,
   bigint,
   text,
-  date,
   index,
+  timestamp,
   singlestoreTableCreator,
 } from "drizzle-orm/singlestore-core"
 
@@ -17,12 +15,17 @@ export const foldersTable = createTable(
     id: bigint("id", { mode: "number", unsigned: true })
       .primaryKey()
       .autoincrement(),
+    ownerId: text("owner_id").notNull(),
     name: text("name").notNull(),
     parent: bigint("parent", { mode: "number", unsigned: true }),
-    created_at: date("created_at").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
   (table) => {
-    return [index("parent_index").on(table.parent)]
+    return [
+      index("parent_index").on(table.parent),
+      index("owner_id_index").on(table.ownerId),
+    ]
   },
 )
 
@@ -32,14 +35,19 @@ export const filesTable = createTable(
     id: bigint("id", { mode: "number", unsigned: true })
       .primaryKey()
       .autoincrement(),
+    ownerId: text("owner_id").notNull(),
     name: text("name").notNull(),
     type: text("type").notNull(),
     size: int("size").notNull(),
     url: text("url").notNull(),
     parent: bigint("parent", { mode: "number", unsigned: true }).notNull(),
-    created_at: date("created_at").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
   (table) => {
-    return [index("parent_index").on(table.parent)]
+    return [
+      index("parent_index").on(table.parent),
+      index("owner_id_index").on(table.ownerId),
+    ]
   },
 )
