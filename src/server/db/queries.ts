@@ -31,7 +31,6 @@ export async function getAllParentsByFolderId(folderId: number) {
       .from(foldersTable)
       .where(eq(foldersTable.id, currentFolderId))
     if (!folder[0]) break
-    if (folder[0].parent === null) break
     parents.unshift(folder[0])
     currentFolderId = folder[0].parent
   }
