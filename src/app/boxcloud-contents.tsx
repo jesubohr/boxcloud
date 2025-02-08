@@ -1,7 +1,11 @@
+"use client"
+
 import type { BoxFolder, BoxFile } from "~/types"
 import { Header } from "~/components/header"
 import { Breadcrumb } from "~/components/breadcrumb"
+import { UploadButton } from "~/components/uploadthing"
 import { ItemList, FolderRow, FileRow } from "~/components/file-list"
+import { useRouter } from "next/navigation"
 
 interface Props {
   folders: BoxFolder[]
@@ -9,6 +13,8 @@ interface Props {
   parents: BoxFolder[]
 }
 export default function BoxCloudContents({ folders, files, parents }: Props) {
+  const navigate = useRouter()
+
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <Header />
@@ -22,6 +28,11 @@ export default function BoxCloudContents({ folders, files, parents }: Props) {
             <FileRow key={file.id} file={file} />
           ))}
         </ItemList>
+        <UploadButton
+          className="mt-10"
+          endpoint="imageUploader"
+          onClientUploadComplete={() => navigate.refresh()}
+        />
       </main>
     </div>
   )
