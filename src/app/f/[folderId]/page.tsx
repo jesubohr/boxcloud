@@ -21,5 +21,12 @@ export default async function BoxCloud(props: Props) {
     getAllParentsByFolderId(folderId),
   ])
 
-  return <BoxCloudContents folders={folders} files={files} parents={parents} />
+  return (
+    <BoxCloudContents
+      folders={folders}
+      files={files}
+      parents={parents}
+      currentFolderId={folderId}
+    />
+  )
 }

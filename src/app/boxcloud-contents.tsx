@@ -11,8 +11,9 @@ interface Props {
   folders: BoxFolder[]
   files: BoxFile[]
   parents: BoxFolder[]
+  currentFolderId: number
 }
-export default function BoxCloudContents({ folders, files, parents }: Props) {
+export default function BoxCloudContents({ folders, files, parents, currentFolderId }: Props) {
   const navigate = useRouter()
 
   return (
@@ -30,6 +31,7 @@ export default function BoxCloudContents({ folders, files, parents }: Props) {
         </ItemList>
         <UploadButton
           className="mt-10"
+          input={{ folderId: currentFolderId }}
           endpoint="imageUploader"
           onClientUploadComplete={() => navigate.refresh()}
         />

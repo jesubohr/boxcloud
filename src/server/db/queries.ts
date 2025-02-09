@@ -37,7 +37,15 @@ export async function getAllParentsByFolderId(folderId: number) {
   return parents
 }
 
+export async function getFolderById(folderId: number) {
+  const folder = await db
+    .select()
+    .from(foldersTable)
+    .where(eq(foldersTable.id, folderId))
+  return folder[0]
+}
+
 /* MUTATIONS */
-export async function createFile(input: { file: Omit<BoxFile, "id" | "parent">, userId: string }) {
-  return await db.insert(filesTable).values({ ...input.file, parent: 1 })
+export async function createFile(input: { file: Omit<BoxFile, "id">, userId: string }) {
+  return await db.insert(filesTable).values({ ...input.file })
 }
