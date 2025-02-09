@@ -3,7 +3,7 @@ import {
   getFilesByFolderId,
   getAllParentsByFolderId,
 } from "~/server/db/queries"
-import BoxCloudContents from "~/app/boxcloud-contents"
+import BoxCloudContents from "./boxcloud-contents"
 
 interface Props {
   params: Promise<{ folderId: string }>
