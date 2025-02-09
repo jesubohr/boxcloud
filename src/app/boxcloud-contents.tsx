@@ -32,7 +32,7 @@ export default function BoxCloudContents({ folders, files, parents, currentFolde
         <UploadButton
           className="mt-10"
           input={{ folderId: currentFolderId }}
-          endpoint="imageUploader"
+          endpoint="boxUploader"
           onClientUploadComplete={() => navigate.refresh()}
         />
       </main>
