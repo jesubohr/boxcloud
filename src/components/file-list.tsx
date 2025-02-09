@@ -9,9 +9,10 @@ export function ItemList({ children }: { children: React.ReactNode }) {
       <table className="w-full text-left">
         <thead>
           <tr className="border-b border-gray-700">
-            <th className="px-4 py-2 font-semibold">Name</th>
+            <th className="px-4 py-2 w-2/5 font-semibold">Name</th>
             <th className="px-4 py-2 font-semibold">Type</th>
             <th className="px-4 py-2 font-semibold">Size</th>
+            <th className="px-4 py-2 font-semibold">Created</th>
           </tr>
         </thead>
         <tbody>{children}</tbody>
@@ -23,7 +24,7 @@ export function ItemList({ children }: { children: React.ReactNode }) {
 export function FileRow({ file }: { file: BoxFile }) {
   return (
     <tr key={file.id} className="border-b border-gray-800 hover:bg-gray-800">
-      <td className="px-4 py-2">
+      <td className="px-4 py-2 w-2/5">
         <a href={file.url} className="flex w-full items-center" target="_blank">
           <FileIcon className="mr-2 h-5 w-5 text-gray-400" />
           {file.name}
@@ -31,7 +32,7 @@ export function FileRow({ file }: { file: BoxFile }) {
       </td>
       <td className="px-4 py-2 capitalize">{file.type}</td>
       <td className="px-4 py-2">{formatSize(file.size) ?? "-"}</td>
-      <td className="px-4 py-2">{formatDate(file.created_at)}</td>
+      <td className="px-4 py-2">{formatDate(file.createdAt)}</td>
     </tr>
   )
 }
@@ -39,7 +40,7 @@ export function FileRow({ file }: { file: BoxFile }) {
 export function FolderRow({ folder }: { folder: BoxFolder }) {
   return (
     <tr key={folder.id} className="border-b border-gray-800 hover:bg-gray-800">
-      <td className="px-4 py-2">
+      <td className="px-4 py-2 w-2/5">
         <Link
           href={`/f/${folder.id}`}
           className="flex w-full items-center text-left"
@@ -50,7 +51,7 @@ export function FolderRow({ folder }: { folder: BoxFolder }) {
       </td>
       <td className="px-4 py-2 capitalize">Folder</td>
       <td className="px-4 py-2">-</td>
-      <td className="px-4 py-2">{formatDate(folder.created_at)}</td>
+      <td className="px-4 py-2">{formatDate(folder.createdAt)}</td>
     </tr>
   )
 }
