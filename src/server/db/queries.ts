@@ -11,7 +11,7 @@ export function getFoldersByFolderId(folderId: number) {
     .select()
     .from(foldersTable)
     .where(eq(foldersTable.parent, folderId))
-    .orderBy(foldersTable.name)
+    .orderBy(foldersTable.id)
 }
 
 export function getFilesByFolderId(folderId: number) {
@@ -19,7 +19,7 @@ export function getFilesByFolderId(folderId: number) {
     .select()
     .from(filesTable)
     .where(eq(filesTable.parent, folderId))
-    .orderBy(filesTable.name)
+    .orderBy(filesTable.id)
 }
 
 export async function getAllParentsByFolderId(folderId: number) {
@@ -42,6 +42,15 @@ export async function getFolderById(folderId: number) {
     .select()
     .from(foldersTable)
     .where(eq(foldersTable.id, folderId))
+  return folder[0]
+}
+
+export async function getRootFolder() {
+  const folder = await db
+    .select()
+    .from(foldersTable)
+    .orderBy(foldersTable.id)
+    .limit(1)
   return folder[0]
 }
 
