@@ -4,7 +4,7 @@ export function Header() {
   return (
     <header className="bg-gray-800 py-4">
       <div className="container mx-auto flex items-center justify-between px-4">
-        <h1 className="text-2xl font-bold">Google Drive Clone</h1>
+        <h1 className="text-2xl font-bold">BoxCloud</h1>
         <div className="flex items-center gap-8">
           <SignedOut>
             <SignInButton />
