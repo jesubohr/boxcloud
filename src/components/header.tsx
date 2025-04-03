@@ -1,7 +1,6 @@
 import {
   SignInButton,
   SignedIn,
-  SignUpButton,
   SignedOut,
   UserButton,
 } from "@clerk/nextjs"
@@ -18,7 +17,7 @@ export function Header() {
         </div>
         <div className="flex items-center gap-6">
           <SignedOut>
-            <SignInButton>
+            <SignInButton forceRedirectUrl="/drive">
               <Button
                 variant="ghost"
                 className="hidden text-gray-300 hover:bg-gray-800 hover:text-gray-100 md:flex"
@@ -26,11 +25,6 @@ export function Header() {
                 Sign In
               </Button>
             </SignInButton>
-            <SignUpButton>
-              <Button className="border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700">
-                Get Started
-              </Button>
-            </SignUpButton>
           </SignedOut>
           <SignedIn>
             <UserButton />

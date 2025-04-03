@@ -1,4 +1,4 @@
-import { SignUpButton } from "@clerk/nextjs"
+import { SignInButton } from "@clerk/nextjs"
 import { Check, Cloud, FileText, Lock, Share2, Upload } from "lucide-react"
 import { Button } from "~/components/ui/button"
 
@@ -186,14 +186,14 @@ function HeroSection() {
             Secure cloud storage and file sharing for everyone
           </p>
           <div className="flex flex-col gap-4 pt-4 sm:flex-row">
-            <SignUpButton>
+            <SignInButton forceRedirectUrl="/drive">
               <Button
                 size="lg"
                 className="border border-gray-700 bg-gradient-to-r from-gray-800 to-gray-900 text-gray-200 hover:from-gray-700 hover:to-gray-800"
               >
                 Start for free
               </Button>
-            </SignUpButton>
+            </SignInButton>
           </div>
         </div>
         <div className="relative mx-auto aspect-video overflow-hidden rounded-xl border border-gray-800 bg-gray-900/50 md:w-full lg:w-10/12 xl:w-9/12">
