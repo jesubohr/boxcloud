@@ -1,7 +1,7 @@
 import "server-only"
 
 import { db } from "./index"
-import { eq } from "drizzle-orm"
+import { eq, and, isNull } from "drizzle-orm"
 import { foldersTable, filesTable } from "~/server/db/schema"
 import type { BoxFile } from "~/types"
 
@@ -45,16 +45,54 @@ export async function getFolderById(folderId: number) {
   return folder[0]
 }
 
-export async function getRootFolder() {
+export async function getRootFolderForUser(userId: string) {
   const folder = await db
     .select()
     .from(foldersTable)
-    .orderBy(foldersTable.id)
-    .limit(1)
+    .where(and(eq(foldersTable.ownerId, userId), isNull(foldersTable.parent)))
   return folder[0]
 }
 
 /* MUTATIONS */
-export async function createFile(input: { file: Omit<BoxFile, "id">, userId: string }) {
+export async function createFile(input: {
+  file: Omit<BoxFile, "id">
+  userId: string
+}) {
   return await db.insert(filesTable).values({ ...input.file })
+}
+
+export async function onBoardUser(userId: string) {
+  const existingRootFolder = await getRootFolderForUser(userId)
+  if (existingRootFolder) return
+
+  const rootFolder = await db
+    .insert(foldersTable)
+    .values({
+      name: "Root",
+      parent: null,
+      ownerId: userId,
+    })
+    .$returningId()
+
+  const rootFolderId = rootFolder[0]!.id
+
+  await db.insert(foldersTable).values([
+    {
+      name: "Trash",
+      parent: rootFolderId,
+      ownerId: userId,
+    },
+    {
+      name: "Starred",
+      parent: rootFolderId,
+      ownerId: userId,
+    },
+    {
+      name: "Shared",
+      parent: rootFolderId,
+      ownerId: userId,
+    },
+  ])
+
+  return rootFolderId
 }
