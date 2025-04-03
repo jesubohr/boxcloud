@@ -53,6 +53,14 @@ export async function getRootFolderForUser(userId: string) {
   return folder[0]
 }
 
+export async function getFolderByIdAndUserId(folderId: number, userId: string) {
+  const folder = await db
+    .select()
+    .from(foldersTable)
+    .where(and(eq(foldersTable.id, folderId), eq(foldersTable.ownerId, userId)))
+  return folder[0]
+}
+
 /* MUTATIONS */
 export async function createFile(input: {
   file: Omit<BoxFile, "id">

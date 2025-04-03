@@ -2,6 +2,7 @@ import {
   getFoldersByFolderId,
   getFilesByFolderId,
   getAllParentsByFolderId,
+  getFolderByIdAndUserId,
 } from "~/server/db/queries"
 import { redirect } from "next/navigation"
 import { auth } from "@clerk/nextjs/server"
@@ -17,7 +18,12 @@ export default async function BoxCloud(props: Props) {
   if (!userId) return redirect("/")
 
   if (isNaN(folderId)) {
-    return <div>Invalid folder id</div>
+    return redirect("/drive")
+  }
+
+  const folder = await getFolderByIdAndUserId(folderId, userId)
+  if (!folder) {
+    return redirect("/drive")
   }
 
   const [folders, files, parents] = await Promise.all([
